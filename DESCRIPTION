@@ -7,5 +7,4 @@ Maintainer: eadperitos.com
 URL: eadperitos.com
 License: GPL (>= 2)
 Depends: R (>= 3.1.0)
-Encoding: UTF-8
 RoxygenNote: 7.2.0
