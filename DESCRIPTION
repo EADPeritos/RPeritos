@@ -4,7 +4,8 @@ Title: Ferramentas para Avaliação de Bens Imóveis
 Version: 22.5.14
 Author: eadperitos.com
 Maintainer: eadperitos.com
-License: GPL
+URL: eadperitos.com
+License: GPL (>= 2)
+Depends: R (>= 3.1.0)
 Encoding: UTF-8
-LazyData: true
 RoxygenNote: 7.2.0
