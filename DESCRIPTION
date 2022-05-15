@@ -3,10 +3,9 @@ Type: Package
 Title: Ferramentas para Avaliação de Bens Imóveis
 Version: 22.5.14
 Author: eadperitos.com
-Maintainer: eadperitos.com
-URL: eadperitos.com
-License: GPL (>= 2)
-Depends: R (>= 3.1.0)
-RoxygenNote: 7.2.0
+Maintainer: EAD Peritos <rperitos@eadperitos.com>
+Description: Funções para análise e processamento de dados para avaliação de bens imóveis.
+License: GPL >= 2.0
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 7.2.0

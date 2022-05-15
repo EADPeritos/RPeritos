@@ -1,8 +1,8 @@
-#' Função para predizer valores de bens imóveis
+#' Funcao para predizer valores de bens imoveis
 #'
-#' Função para predição de valores de bens imóveis via regressão linear
+#' Função para predicao de valores de bens imoveis via regressao linear
 #' @param model O modelo calculado por lm()
-#' @return Apresenta a função para precificação de bens imóveis
+#' @return Apresenta a funcao para precificacao de bens imoveis
 #' @examples
 #' fpred(modelo);
 #' @export
@@ -18,12 +18,12 @@ fpred <- function(model) {
    }
 }
 
-#' Intervalos e Campo arbítrio
+#' Intervalos e Campo arbitrio
 #'
-#' Calcula os intervalos de confiança e o campo de arbítrio
+#' Calcula os intervalos de confianca e o campo de arbitrio
 #' @param modelo O modelo calculado por lm()
 #' @param avaliando Dataframe com os dados do bem avaliando
-#' @return Valores dos intervalos de confiança (superior e inferior) e o campo de arbítrio para o valor estimado do bem imóvel
+#' @return Valores dos intervalos de confianca (superior e inferior) e o campo de arbitrio para o valor estimado do bem imovel
 #' @examples
 #' iConf_CA(modelo, avaliando);
 #' @export
@@ -42,12 +42,12 @@ iConf_CA <- function(modelo, avaliando) {
 }
 
 
-#' Análise de Significancia das variáveis e do modelo
+#' Análise de Significancia das variaveis e do modelo
 #'
-#' Calcula a significancia estatística das variáveis e do modelo
+#' Calcula a significancia estatistica das variaveis e do modelo
 #' @param model O modelo calculado por lm()
 #' @param data Dataframe dos dados
-#' @return Retorna a significancia das variaveis e do modelo e classifica referente ao Grau de Fundamentação definido na NBR 14.653-2
+#' @return Retorna a significancia das variaveis e do modelo e classifica referente ao Grau de Fundamentacao definido na NBR 14.653-2
 #' @examples
 #' niveisRM(model, data);
 #' @export
@@ -154,23 +154,22 @@ niveisRM <- function(model, data) {
 
 }
 
-#' Amplitude e Grau de Precisão
+
+#' Amplitude e Grau de Precisao
 #'
-#'  Calcula a amplitude e classifica quanto ao grau de precisão definido na NBR 14.653-2
-#' @param model O modelo calculado por lm()
-#' @param data Dataframe com os dados do bem avaliando
-#' @return Valores de amplitude e Grau de Precisão
+#'  Calcula a amplitude e classifica quanto ao grau de precisao definido na NBR 14.653-2
+#' @param modelo O modelo calculado por lm()
+#' @param avaliando Dataframe com os dados do bem avaliando
+#' @return Valores de amplitude e Grau de Precisao
 #' @examples
-#' ampModelo(model, avaliando);
+#' ampModelo(modelo, avaliando);
 #' @export
-ampModelo <- function (model, ava) {
+ampModelo <- function(modelo, avaliando) {
+   predito <- predict(modelo, avaliando, interval="confidence", level = 0.80)
+   px <- ((predito[3] - predito[2]) / predito[1]) * 100
    cat('eadperitos.com')
    cat('\n--------------------------------------------------------\n')
-   cat('Análise de amplitude (80%)\n')
-   pp <- predict(model, ava, interval="confidence", level = 0.80)
-
-   px <- ((pp[3] - pp[2]) / pp[1]) * 100
-
+   cat('Analise de amplitude (80%)\n')
    cat("\nAmplitude: ", round(px,2), "%\n")
 
    if (px <= 50) {
@@ -192,3 +191,63 @@ ampModelo <- function (model, ava) {
    )
 
 }
+
+
+#' Teste de Chauvenet
+#'
+#' Realiza o teste de Chauvenet para um vetor de dados.
+#' @param dados Vetor de dados com a variavel que sera analisada
+#' @return Retorna os valores do conjunto de dados que precisam ser removidos
+#' @examples
+#' teste.chauvenet(dados$Valor)
+#' @export
+teste.chauvenet <- function(dados) {
+   cat('eadperitos.com')
+   cat('\n--------------------------------------------------------\n')
+   cat('Teste de Chauvenet\n')
+
+   valn <- c(2,3,4,5,6,7,8,9,10,12,15,20,25,30,35,40,50,75,100,200,500)
+   valc <- c(1.15,1.38,1.54,1.65,1.73,1.80,1.86,1.91,1.96,2.04,2.13,2.24,2.33,2.40,2.45,2.50,2.58,2.71,2.81,3.02,3.29)
+
+   nn <- length(dados)
+   cat('\n Amostra: ', nn)
+
+   remv <- rep(0, nn)
+   crt <- valc[which(valn >= nn)[1]]
+   cat('\n Dmax: ', crt, '\n\n')
+   for(i in 1:nn) {
+      if ((abs(dados[i] - mean(dados)) / sd(dados)) > crt) {
+         remv[i] <- "remover"
+      } else { remv[i] <- " --- "}
+   }
+   data.frame(cbind(dados, remv))
+
+}
+
+
+
+#' Teste do Desvio Padrao
+#'
+#' Realiza o teste do desvio padrao para um vetor de dados.
+#' @param dados Vetor de dados com a variavel que sera analisada
+#' @return Retorna os valores do conjunto de dados que precisam ser removidos e encontram-se acima ou abaixo de dois desvios padroes assim como o grafico informando os pontos discrepantes.
+#' @examples
+#' teste.dp(dados$Valor)
+teste.dp <- function(dados) {
+   cat('eadperitos.com')
+   cat('\n--------------------------------------------------------\n')
+   cat('Teste do Desvio Padrao\n\n')
+   nn <- length(dados)
+   remv <- rep(0, nn)
+   for(i in 1:nn) {
+      if ((dados[i] > (mean(dados) + (2*sd(dados))))  || (dados[i] < (mean(dados) - (2*sd(dados))))  ) {
+         remv[i] <- "remover"
+      } else { remv[i] <- " --- "}
+   }
+   plot(dados, ylim=c(min(dados)-3*sd(dados), max(dados)+3*sd(dados)))
+   abline(h=mean(dados) - 2*sd(dados), col='blue')
+   abline(h=mean(dados) + 2*sd(dados), col='blue')
+   data.frame(cbind(dados, remv))
+}
+
+

@@ -2,21 +2,21 @@
 % Please edit documentation in R/RPeritos.R
 \name{ampModelo}
 \alias{ampModelo}
-\title{Amplitude e Grau de Precisão}
+\title{Amplitude e Grau de Precisao}
 \usage{
-ampModelo(model, ava)
+ampModelo(modelo, avaliando)
 }
 \arguments{
-\item{model}{O modelo calculado por lm()}
+\item{modelo}{O modelo calculado por lm()}
 
-\item{data}{Dataframe com os dados do bem avaliando}
+\item{avaliando}{Dataframe com os dados do bem avaliando}
 }
 \value{
-Valores de amplitude e Grau de Precisão
+Valores de amplitude e Grau de Precisao
 }
 \description{
-Calcula a amplitude e classifica quanto ao grau de precisão definido na NBR 14.653-2
+Calcula a amplitude e classifica quanto ao grau de precisao definido na NBR 14.653-2
 }
 \examples{
-ampModelo(model, avaliando);
+ampModelo(modelo, avaliando);
 }
