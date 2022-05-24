@@ -2,7 +2,7 @@
 % Please edit documentation in R/RPeritos.R
 \name{niveisRM}
 \alias{niveisRM}
-\title{Análise de Significancia das variáveis e do modelo}
+\title{Análise de Significancia das variaveis e do modelo}
 \usage{
 niveisRM(model, data)
 }
@@ -12,10 +12,10 @@ niveisRM(model, data)
 \item{data}{Dataframe dos dados}
 }
 \value{
-Retorna a significancia das variaveis e do modelo e classifica referente ao Grau de Fundamentação definido na NBR 14.653-2
+Retorna a significancia das variaveis e do modelo e classifica referente ao Grau de Fundamentacao definido na NBR 14.653-2
 }
 \description{
-Calcula a significancia estatística das variáveis e do modelo
+Calcula a significancia estatistica das variaveis e do modelo
 }
 \examples{
 niveisRM(model, data);

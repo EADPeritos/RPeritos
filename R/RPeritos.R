@@ -1,3 +1,42 @@
+#' Funcao para testar micronumerosidade da amostra e indicar quantidade de elementos amostrais
+#'
+#' Função para calcular e classificar o grau de fundamentação quanto a micronumerosidade dos dados amostrais e indicar a quantidade ideal de dados
+#' @param data Dataframe do conjunto de dados
+#' @return Indica a quantidade ideal de elementos amostrais e classifica com o grau de fundamentacao correspondente
+#' @examples
+#' micronum(data);
+#' @export
+micronum <- function(data) {
+   cat('eadperitos.com')
+   cat('\n--------------------------------------------------------\n')
+   n <- nrow(data)
+   v <- ncol(data) - 1
+
+   cat(' Elementos amostrais: ', n)
+   cat('\n Variaveis explicativas: ', v)
+
+   g1 <- 3 * (v + 1)
+   g2 <- 4 * (v + 1)
+   g3 <- 6 * (v + 1)
+
+   cat('\n\n Classificação atual:')
+   if (n <= g1) {
+      cat(' Grau I')
+   } else if (n <= g2) {
+      cat(' Grau II')
+   } else {
+      cat(' Grau III')
+   }
+
+   cat('\n\n Quantidade ideal de elementos amostrais')
+   cat('\n Grau I  : ', g1)
+   cat('\n Grau II : ', g2)
+   cat('\n Grau III: ', g3)
+   cat('\n\n')
+
+}
+
+
 #' Funcao para predizer valores de bens imoveis
 #'
 #' Função para predicao de valores de bens imoveis via regressao linear
@@ -7,6 +46,8 @@
 #' fpred(modelo);
 #' @export
 fpred <- function(model) {
+   cat('eadperitos.com')
+   cat('\n--------------------------------------------------------\n')
    cat("Valor = \n")
    for (i in 2:length(model$coefficients)) {
       if (model$coefficients[i] > 0) {

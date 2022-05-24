@@ -7,7 +7,7 @@
 teste.chauvenet(dados)
 }
 \arguments{
-\item{dados}{Vetor de dados com a variável que será analisada}
+\item{dados}{Vetor de dados com a variavel que sera analisada}
 }
 \value{
 Retorna os valores do conjunto de dados que precisam ser removidos

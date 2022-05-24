@@ -2,7 +2,7 @@
 % Please edit documentation in R/RPeritos.R
 \name{fpred}
 \alias{fpred}
-\title{Função para predizer valores de bens imóveis}
+\title{Funcao para predizer valores de bens imoveis}
 \usage{
 fpred(model)
 }
@@ -10,10 +10,10 @@ fpred(model)
 \item{model}{O modelo calculado por lm()}
 }
 \value{
-Apresenta a função para precificação de bens imóveis
+Apresenta a funcao para precificacao de bens imoveis
 }
 \description{
-Função para predição de valores de bens imóveis via regressão linear
+Função para predicao de valores de bens imoveis via regressao linear
 }
 \examples{
 fpred(modelo);

@@ -2,7 +2,7 @@
 % Please edit documentation in R/RPeritos.R
 \name{iConf_CA}
 \alias{iConf_CA}
-\title{Intervalos e Campo arbítrio}
+\title{Intervalos e Campo arbitrio}
 \usage{
 iConf_CA(modelo, avaliando)
 }
@@ -12,10 +12,10 @@ iConf_CA(modelo, avaliando)
 \item{avaliando}{Dataframe com os dados do bem avaliando}
 }
 \value{
-Valores dos intervalos de confiança (superior e inferior) e o campo de arbítrio para o valor estimado do bem imóvel
+Valores dos intervalos de confianca (superior e inferior) e o campo de arbitrio para o valor estimado do bem imovel
 }
 \description{
-Calcula os intervalos de confiança e o campo de arbítrio
+Calcula os intervalos de confianca e o campo de arbitrio
 }
 \examples{
 iConf_CA(modelo, avaliando);
