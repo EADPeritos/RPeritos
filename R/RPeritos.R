@@ -7,7 +7,6 @@
 #' micronum(data);
 #' @export
 micronum <- function(data) {
-   cat('eadperitos.com')
    cat('\n--------------------------------------------------------\n')
    n <- nrow(data)
    v <- ncol(data) - 1
@@ -46,7 +45,6 @@ micronum <- function(data) {
 #' fpred(modelo);
 #' @export
 fpred <- function(model) {
-   cat('eadperitos.com')
    cat('\n--------------------------------------------------------\n')
    cat("Valor = \n")
    for (i in 2:length(model$coefficients)) {
@@ -70,7 +68,6 @@ fpred <- function(model) {
 #' @export
 iConf_CA <- function(modelo, avaliando) {
    pred <- predict(modelo, avaliando, interval = "confidence")
-   cat('eadperitos.com')
    cat('\n--------------------------------------------------------\n')
    cat("Valor estimado: ", pred[1],'\n')
    cat("\nIntervalos de Confiança")
@@ -144,7 +141,6 @@ niveisRM <- function(model, data) {
       }
    }
 
-   cat('eadperitos.com')
    cat('\n--------------------------------------------------------\n')
    cat("Analise Significancia das Variaveis - Teste t Student \n")
    cat('\n')
@@ -208,7 +204,6 @@ niveisRM <- function(model, data) {
 ampModelo <- function(modelo, avaliando) {
    predito <- predict(modelo, avaliando, interval="confidence", level = 0.80)
    px <- ((predito[3] - predito[2]) / predito[1]) * 100
-   cat('eadperitos.com')
    cat('\n--------------------------------------------------------\n')
    cat('Analise de amplitude (80%)\n')
    cat("\nAmplitude: ", round(px,2), "%\n")
@@ -243,7 +238,6 @@ ampModelo <- function(modelo, avaliando) {
 #' teste.chauvenet(dados$Valor)
 #' @export
 teste.chauvenet <- function(dados) {
-   cat('eadperitos.com')
    cat('\n--------------------------------------------------------\n')
    cat('Teste de Chauvenet\n')
 
@@ -275,7 +269,6 @@ teste.chauvenet <- function(dados) {
 #' @examples
 #' teste.dp(dados$Valor)
 teste.dp <- function(dados) {
-   cat('eadperitos.com')
    cat('\n--------------------------------------------------------\n')
    cat('Teste do Desvio Padrao\n\n')
    nn <- length(dados)
@@ -291,4 +284,133 @@ teste.dp <- function(dados) {
    data.frame(cbind(dados, remv))
 }
 
+
+#' Analisar
+#'
+#' Realiza a analise dos dados
+#' @param dados Vetor de dados com as variaveis que serão analisadas
+#' @return Retorna informacoes descritvas e classificacoes diversas
+#' @examples
+#' analisar(dados)
+analisar <- function(data) {
+   cat("-----------------------------------------------------------------\n")
+   cat("TIPOS DE VARIÁVEIS\n\n")
+   for (i in 1:length(names(data))) {
+
+      if ((names(data)[i] == "Valor") || names(data)[i] == "valor") {
+         cat("[ D/R ]", names(data)[i], "\n")
+      } else {
+         cat("[ I/E ]", names(data)[i], "\n")
+      }
+   }
+
+   cat("\n\nLegenda:\n[ I/E ] Variáveis Independentes/Explicativas\n[ D/R ] Variável Dependente/Resposta\n\n")
+
+   cat("-----------------------------------------------------------------\n")
+   cat("MODELO ESTATÍSTICO TEÓRICO\n\n")
+
+   var_ind <- rep(0, length(names(data)) -1)
+
+   for (i in 1:length(names(data))) {
+      if ((names(data)[i] == "Valor") || names(data)[i] == "valor") {
+         var_model <- names(data)[i]
+      } else {
+         var_ind[i] <- names(data)[i]
+      }
+   }
+
+
+   cat(var_model, " = " )
+   for (i in 1:length(var_ind)) {
+      cat(" + ", var_ind[i])
+   }
+
+   cat("\n\n Utilize a função lm() para criar o modelo\n\nmodelo <- lm(valor, variavel1 + variavel2, data = dados)\n")
+   cat("-----------------------------------------------------------------\n")
+
+
+}
+
+
+calcular <- function(modelo, dados, avaliando) {
+   cat("-----------------------------------------------------------------\n")
+   cat(" RELATORIO TECNICO DO MODELO ESTATISTICO\n\n")
+
+   cat("Valor estimado do bem avaliando: R$ ", as.numeric(predict.lm(modelo, avaliando)), "\n\n")
+
+   print(summary(modelo))
+
+   cat("-----------------------------------------------------------------\n")
+   cat(" ESTATÍSTICAS E TOMADA DE DECISÃO\n\n")
+   modelo_summary <- summary(modelo)
+   cat(" R2: ", summary(modelo)$r.squared)
+   cat(" \nR2 ajustado: ", summary(modelo)$adj.r.squared)
+   cat(" \nEstatistica F: ", modelo_summary$fstatistic[1])
+   cat(" \nEstatistica F: ", modelo_summary$fstatistic[1])
+   cat(" \nGraus de liberdade: ", modelo_summary$fstatistic[2], ", ", modelo_summary$fstatistic[3])
+   f <- summary(modelo)$fstatistic
+   p <- pf(f[1],f[2],f[3],lower.tail=F)
+   cat(" \np-valor: ", p)
+
+   cat("\n\n-----------------------------------------------------------------\n")
+   cat(" FUNÇÃO PREDITIVA\n\n")
+   print(RPeritos::fpred(modelo))
+
+   cat("\n\n-----------------------------------------------------------------\n")
+   cat(" ANALISE DE MICRONUMEROSIDADE DOS DADOS\n\n")
+   print(RPeritos::micronum(dados))
+
+   cat("\n\n-----------------------------------------------------------------\n")
+   cat(" ANALISE VALORES DISCREPANTES (DISTANCIA DE COOK)\n\n")
+   par(mfrow=c(2,2))
+   print(cooks.distance(modelo))
+   cooksd <- cooks.distance(modelo)
+   plot(cooksd, main="Pontos influentes (Distancia Cook)", ylim = c(0,1))
+   abline(h = 1, col="red", lwd=2)
+
+   cat("\n\n-----------------------------------------------------------------\n")
+   cat(" ANALISE DOS RESIDUOS (DURBIN-WATSON\n\n")
+   print(durbinWatsonTest(modelo))
+   dw <- durbinWatsonTest(modelo)
+   if (dw$p > 0.05) {
+      cat("\nOs resíduos analisados são independentes e sem autocorrelação")
+   } else {
+      cat("\nOs resíduos analisados são dependentes e apresentam autocorrelação")
+
+   }
+   plot(modelo$residuals, main="Análise dos resíduos")
+
+   cat("\n\n-----------------------------------------------------------------\n")
+   cat(" ANALISE DE MICRONUMEROSIDADE DOS DADOS\n\n")
+   print(RPeritos::micronum(dados))
+
+   cat("\n\n-----------------------------------------------------------------\n")
+   cat(" ANALISE DE SIGNIFICANCIA\n\n")
+   print(RPeritos::niveisRM(modelo, dados))
+
+
+   cat("\n\n-----------------------------------------------------------------\n")
+   cat(" AVALIAÇÃO INTERVALAR\n\n")
+   print(RPeritos::iConf_CA(modelo, avaliando))
+   plot(predict(modelo, dados), main = "Intervalos de confiança")
+   intervalos <- predict(modelo, dados, interval = "confidence")
+   points(intervalos[,2], col='blue', pch=19, type='l')
+   points(intervalos[,3], col='blue', pch=19, type='l')
+   int_pred <- predict(modelo, dados, interval = "prediction")
+   points(int_pred[,2], col='red', pch=19, type='l', lty=2)
+   points(int_pred[,3], col='red', pch=19, type='l', lty=2)
+
+   plot(predict.lm(modelo, avaliando), main = "Campo de arbítrio")
+   ca1 <- as.numeric(predict.lm(modelo, avaliando)) * 0.85
+   ca2 <- as.numeric(predict.lm(modelo, avaliando)) * 1.15
+   abline(h = ca1, lwd = 1, col='red')
+   abline(h = ca2, lwd = 1, col='red')
+
+   par(mfrow = c(1,1))
+
+   cat("\n\n-----------------------------------------------------------------\n")
+   cat(" AMPLITUDE\n\n")
+   print(RPeritos::ampModelo(modelo, avaliando))
+
+}
 
