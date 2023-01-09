@@ -259,6 +259,16 @@ teste.chauvenet <- function(dados) {
 
 }
 
+#' Versao do RPeritos
+#'
+#' @return Demonstra a versao atual da ferramenta RPeritos
+#' @examples
+#' versao()
+#' @export
+versao <- function() {
+   vv <- "v:23.9.1"
+   return(vv)
+}
 
 
 #' Teste do Desvio Padrao
